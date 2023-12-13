@@ -12,7 +12,7 @@ router.post('/verify', validateBody(schemas.emailSchema), ctrl.resendVerifyEmail
 router.post('/login', validateBody(schemas.loginSchema), ctrl.login)
 router.post('/logout', authenticate, ctrl.logout)
 router.get('/current', authenticate, ctrl.current)
-router.patch('/users', authenticate,  validateBody(schemas.updateSubscriptionSchema), ctrl.updateSubscription)
+router.patch('/users', authenticate,  validateBody(schemas.updateRoleSchema), ctrl.updateRole)
 router.patch('/avatars', authenticate, uploads.single("avatar"), resize,  ctrl.updateAvatar)
 
 module.exports = router

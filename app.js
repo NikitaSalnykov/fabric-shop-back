@@ -2,6 +2,7 @@ const express = require('express')
 const logger = require('morgan')
 const cors = require('cors')
 require('dotenv').config()
+const winston = require('winston');
 
 const authRouter = require('./routes/api/auth')
 const productsRouter = require('./routes/api/products')
@@ -10,7 +11,7 @@ const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 
-app.use(logger(formatsLogger))
+app.use(logger(formatsLogger))  
 app.use(cors())
 app.use(express.json())
 app.use(express.static('public'))
@@ -27,5 +28,14 @@ app.use((err, req, res, next) => {
   const { status = 500, message = 'Server error'} = err
   res.status(status).json(message)
 })
+
+const winstonLogger = winston.createLogger({
+  level: 'info',
+  format: winston.format.simple(),
+  transports: [
+    new winston.transports.Console(),
+  ],
+});
+
 
 module.exports = app

@@ -23,28 +23,27 @@ const register = async (req, res) => {
 
   const hashPassword = await bcrypt.hash(password, 10)
   const avatarURL = gravatar.url(email);
-  const verificationToken = nanoid()
-
-  const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL, verificationToken })
-  
+  const verificationToken = nanoid()  
   const verifyEmail = {
     to: email,
     html:
     `<div>
-    <h2>Hello, ${email}</h2>
-    <p>To complete your verification process, please click on the link below:<p>
-    <p><a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Click to verify</a></p>
-    <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
-    <p>Thank you!</p>
+    <h2>Здравствуйте, ${email}</h2>
+    <p>Ваш аккаунт успешно создан для завершения регистрации нажмите кнопку:<p>
+    <p><a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationToken}">Завершить регистрацию</a></p>
+    <p>Спасибо!</p>
     </div>`
     
   }
 
   await sendEmail(verifyEmail);
 
+  const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL, verificationToken })
+
+
   res.status(201).json({
     user: {
-      email: newUser.email, subscription: newUser.subscription
+      email: newUser.email, role: newUser.r
     }
   })
 }
@@ -124,10 +123,10 @@ const login = async (req, res) => {
 }
 
 const current = async (req, res) => {
-  const { email, subscription } = req.user;
+  const { email, role } = req.user;
   const user = await User.findOne({ email });
   res.json({
-    email, subscription
+    email, role
     })
 }
 
@@ -139,7 +138,7 @@ const logout = async (req, res) => {
   })
 }
 
-const updateSubscription = async (req, res) => {
+const updateRole = async (req, res) => {
   const { _id } = req.user;
   const result = await User.findByIdAndUpdate(_id, req.body, { new: true });
   res.json(result)
@@ -168,6 +167,6 @@ module.exports = {
   login: ctrlWrapper(login),
   current: ctrlWrapper(current),
   logout: ctrlWrapper(logout),
-  updateSubscription: ctrlWrapper(updateSubscription),
+  updateRole: ctrlWrapper(updateRole),
   updateAvatar: ctrlWrapper(updateAvatar)
 }

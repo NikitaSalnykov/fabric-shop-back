@@ -14,30 +14,28 @@ const getAll = async (req, res) => {
 }
 
 const getById = async (req, res, next) => {
-  const { contactId } = req.params
-    const result = await Product.findById(contactId)
+  const { productId } = req.params
+    const result = await Product.findById(productId)
     if (!result) throw HttpError(404, "Not found")
     res.json(result)
 }
 
 const addProduct = async (req, res, next) => {
-    // const {_id: owner} = req.user
-    // const result = await Product.create({...req.body, owner})
     const result = await Product.create({...req.body })
 
-    res.status(201).json({message: "Create contact success"})
+    res.status(201).json({message: "Create product success"})
 }
 
-const deleteContact = async (req, res, next) => {
+const deleteProduct = async (req, res, next) => {
       const { productId } = req.params
       const result = await Product.findByIdAndDelete(productId)
       if (!result) throw HttpError(404, "Not found")
       res.json({message: "Delete success"})
 }
 
-const updateContact = async (req, res, next) => {
-    const { contactId } = req.params;
-    const result = await Product.findByIdAndUpdate(contactId, req.body, {new: true})
+const updateProduct = async (req, res, next) => {  console.log(req.body);
+    const { productId } = req.params;
+    const result = await Product.findByIdAndUpdate(productId, req.body, {new: true})
     if (!result) throw HttpError(404, "Not found")
     res.json(result)
 }
@@ -53,7 +51,7 @@ module.exports = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
   addProduct: ctrlWrapper(addProduct),
-  deleteContact: ctrlWrapper(deleteContact),
-  updateContact: ctrlWrapper(updateContact),
+  deleteProduct: ctrlWrapper(deleteProduct),
+  updateProduct: ctrlWrapper(updateProduct),
   updateFavorite: ctrlWrapper(updateFavorite)
 }

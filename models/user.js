@@ -16,9 +16,9 @@ const userSchema = new Schema(  {
     match: emailValidation,
     unique: true,
   },
-  subscription: {
+  role: {
     type: String,
-    enum: ["starter", "pro", "business"],
+    enum: ["user", "admin", "moderator"],
     default: "starter"
   },
   token: {
@@ -44,7 +44,6 @@ const userSchema = new Schema(  {
 userSchema.post("save", handleMangooseErr)
 
 const registerSchema = Joi.object({
-  password: Joi.string().required(),
   email: Joi.string().pattern(emailValidation).required(),
   password: Joi.string().min(6).required()
 })
@@ -59,8 +58,8 @@ const loginSchema = Joi.object({
   password: Joi.string().min(6).required()
 })
 
-const updateSubscriptionSchema = Joi.object({
-  subscription: Joi.valid('starter', 'pro', 'business').required()
+const updateRoleSchema = Joi.object({
+  role: Joi.valid("user", "admin", "moderator").required()
 })
 
   
@@ -68,7 +67,7 @@ const schemas = {
   registerSchema,
   emailSchema,
   loginSchema,
-  updateSubscriptionSchema,
+  updateRoleSchema,
 }
 
 const User = model('user', userSchema)
