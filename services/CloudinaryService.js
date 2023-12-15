@@ -1,4 +1,4 @@
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
   secure: true,
@@ -22,8 +22,8 @@ class CloudinaryService {
 
   async deleteImage(resourceId) {
     const result = await cloudinary.api.delete_resources([resourceId], {
-      type: 'upload',
-      resource_type: 'image',
+      type: "upload",
+      resource_type: "image",
     });
 
     return result;

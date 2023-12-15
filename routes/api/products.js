@@ -16,8 +16,8 @@ router.get("/:productId", isValidId, ctrl.getById);
 
 router.post(
   "/",
-  validateBody(schemas.addSchema),
   upload.single("image"),
+  validateBody(schemas.addSchema),
   getImage,
   ctrl.addProduct
 );
