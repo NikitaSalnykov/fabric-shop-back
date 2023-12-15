@@ -1,6 +1,9 @@
 const cloudinary = require("cloudinary").v2;
 
-cloudinary.config({
+cloudinary.config({ 
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
   secure: true,
 });
 
@@ -13,11 +16,16 @@ class CloudinaryService {
   };
 
   async uploadResource(resourcePath, opts = {}) {
-    const result = await cloudinary.uploader.upload(resourcePath, {
-      ...this.#options,
-      ...opts,
-    });
-    return result;
+    try {
+      const result = await cloudinary.uploader.upload(resourcePath, {
+        ...this.#options,
+        ...opts,
+      });
+      return result;
+    } catch (error) {
+      console.error("Error during resource upload:", error);
+      throw error; 
+    }
   }
 
   async deleteImage(resourceId) {

@@ -7,6 +7,7 @@ const winston = require('winston');
 const authRouter = require('./routes/api/auth')
 const productsRouter = require('./routes/api/products')
 
+
 const app = express()
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'

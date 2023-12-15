@@ -1,6 +1,7 @@
 const { Product } = require("../models/product");
 const { HttpError } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
+const fileController = require("./FileController");
 
 const getAll = async (req, res) => {
   // const { page = 1, limit = 10 } = req.query;
@@ -20,19 +21,9 @@ const getById = async (req, res, next) => {
 };
 
 const addProduct = async (req, res, next) => {
-  const { body, file } = req;
-  if (file?.path) {
-    const { secure_url, public_id } = await fileController.upload(
-      file.path,
-      "images",
-      notice.imageId
-    );
-    body.imageURL = secure_url;
-    body.imageId = public_id ? path.parse(public_id).name : null;
-  }
   const result = await Product.create({ ...req.body });
 
-  res.status(201).json({ message: "Create product success" });
+  res.json({ message: "Add success" });
 };
 
 const deleteProduct = async (req, res, next) => {

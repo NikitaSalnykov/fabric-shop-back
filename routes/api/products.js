@@ -16,7 +16,10 @@ router.get("/:productId", isValidId, ctrl.getById);
 
 router.post(
   "/",
-  upload.single("image"),
+  upload.fields([
+    { name: "mainPhoto", maxCount: 1 },
+    { name: "extraPhotos", maxCount: 3 },
+  ]),
   validateBody(schemas.addSchema),
   getImage,
   ctrl.addProduct
