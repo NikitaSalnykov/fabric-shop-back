@@ -46,6 +46,7 @@ const addOrder = async (req, res, next) => {
     html: `<div>
     <h2>На вашем сайте новый заказ!</h2>
     <p>Только что был оформлен новый заказ, информация о заказе:</p>
+    <h3>Номер заказа: ${order.orderNumber}</h3>
     <p>Имя заказчика: ${order.name} ${order.surname}</p>
     <p>Тел. ${order.tel}</p>
     <p>Способ доставки: ${
