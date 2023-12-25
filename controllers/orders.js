@@ -19,28 +19,34 @@ const addOrder = async (req, res, next) => {
   const result = await Order.create({ ...req.body });
   const { order } = req.body;
 
-  function objectToString(obj) {
-    let result = "";
+  // function objectToString(obj) {
+  //   let result = "";
 
-    for (const key in obj) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        const value = obj[key];
-        if (typeof value !== "object") {
-          result += `${key}: ${value}\n`;
-        }
-      }
-    }
+  //   for (const key in obj) {
+  //     if (Object.prototype.hasOwnProperty.call(obj, key)) {
+  //       const value = obj[key];
+  //       if (typeof value !== "object") {
+  //         result += `${key}: ${value}\n`;
+  //       }
+  //     }
+  //   }
 
-    return result;
-  }
+  //   return result;
+  // }
 
   const orderEmail = {
     to: "salnikov.nkt@gmail.com",
     subject: "Новый заказ",
     html: `<div>
     <h2>На вашем сайте новый заказ!</h2>
-    <p>Только что был оформлен новый заказ, информация о заказе:<p>
-    <p>${objectToString(order)}</p>
+    <p>Только что был оформлен новый заказ, информация о заказе:</p>
+    <p>Имя заказчика: ${order.name} ${order.surname}</p>
+    <p>Тел. ${order.tel}</p>
+    <p>Способ доставки: ${
+      order.delivery !== "" ? order.delivery : "Не указан"
+    }</p>
+    <p>Информация о заказе: ${order.info}</p>
+    <p>Общая сумма заказа: ${order.total}</p>
     </div>`,
   };
 
