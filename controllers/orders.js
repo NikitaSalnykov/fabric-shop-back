@@ -8,6 +8,12 @@ const getAll = async (req, res) => {
   res.json(result);
 };
 
+const getCount = async (req, res) => {
+  let result;
+  result = await Order.countDocuments();
+  res.json(result);
+};
+
 const getById = async (req, res, next) => {
   const { orderId } = req.params;
   const result = await Order.findById(orderId);
@@ -72,20 +78,11 @@ const updateOrder = async (req, res, next) => {
   res.json(result);
 };
 
-const updateFavorite = async (req, res, next) => {
-  const { contactId } = req.params;
-  const result = await Order.findByIdAndUpdate(contactId, req.body, {
-    new: true,
-  });
-  if (!result) throw HttpError(404, "Not found");
-  res.json(result);
-};
-
 module.exports = {
   getAll: ctrlWrapper(getAll),
+  getCount: ctrlWrapper(getCount),
   getById: ctrlWrapper(getById),
   addOrder: ctrlWrapper(addOrder),
   deleteOrder: ctrlWrapper(deleteOrder),
   updateOrder: ctrlWrapper(updateOrder),
-  updateFavorite: ctrlWrapper(updateFavorite),
 };

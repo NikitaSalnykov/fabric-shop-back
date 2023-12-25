@@ -5,6 +5,7 @@ const { validateBody, isValidId, authenticate } = require("../../middlewares");
 const { schemas } = require("../../models/order");
 
 router.get("/", ctrl.getAll);
+router.get("/count", ctrl.getCount);
 router.get("/:orderId", isValidId, ctrl.getById);
 
 router.post("/", validateBody(schemas.addSchema), ctrl.addOrder);
