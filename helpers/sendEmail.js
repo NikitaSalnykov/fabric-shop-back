@@ -1,6 +1,6 @@
-const { trusted } = require('mongoose');
-const nodemailer = require('nodemailer')
-require('dotenv').config()
+const { trusted } = require("mongoose");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
 
 const { META_PASSWORD } = process.env;
 
@@ -10,18 +10,20 @@ const nodemailerConfig = {
   secure: true,
   auth: {
     user: "salnikov.nkt@meta.ua",
-    pass: META_PASSWORD
-  }
+    pass: META_PASSWORD,
+  },
 };
 
 const sendEmail = async (data) => {
-  const email = { ...data, from: "salnikov.nkt@meta.ua" }
-  await transport.sendMail(email)
-}
+  const email = { ...data, from: "salnikov.nkt@meta.ua" };
+  await transport.sendMail(email);
+};
 
-const transport = nodemailer.createTransport(nodemailerConfig)
+console.log();
 
-module.exports = sendEmail
+const transport = nodemailer.createTransport(nodemailerConfig);
+
+module.exports = sendEmail;
 
 // const email = {
 //   to: "salnikov.nkt@gmail.com",
