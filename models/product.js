@@ -47,8 +47,8 @@ const addSchema = Joi.object({
   price: Joi.string().required(),
   description: Joi.string(),
   article: Joi.string(),
-  mainPhoto: Joi.string(),
-  extraPhotos: Joi.array().items(Joi.string()),
+  // mainPhoto: Joi.string(),
+  // extraPhotos: Joi.array().items(Joi.string()),
 });
 
 const updateSchema = Joi.object({
@@ -58,8 +58,6 @@ const updateSchema = Joi.object({
   price: Joi.string(),
   description: Joi.string(),
   article: Joi.string(),
-  mainPhoto: Joi.string(),
-  extraPhotos: Joi.array().items(Joi.string()),
 });
 
 const schemas = {
