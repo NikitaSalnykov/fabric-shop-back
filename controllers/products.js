@@ -34,11 +34,14 @@ const deleteProduct = async (req, res, next) => {
 };
 
 const updateProduct = async (req, res, next) => {
-  console.log(req.body);
   const { productId } = req.params;
-  const result = await Product.findByIdAndUpdate(productId, req.body, {
-    new: true,
-  });
+  const result = await Product.findByIdAndUpdate(
+    productId,
+    { ...req.body },
+    {
+      new: true,
+    }
+  );
   if (!result) throw HttpError(404, "Not found");
   res.json(result);
 };

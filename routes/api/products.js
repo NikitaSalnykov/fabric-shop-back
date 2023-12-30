@@ -31,10 +31,15 @@ router.delete("/:productId", isValidId, ctrl.deleteProduct);
 
 // router.delete('/:contactId', authenticate, isValidId, ctrl.deleteProduct)
 
-router.put(
+router.patch(
   "/:productId",
+  upload.fields([
+    { name: "mainPhoto", maxCount: 1 },
+    { name: "extraPhotos", maxCount: 3 },
+  ]),
   isValidId,
   validateBody(schemas.updateSchema),
+  getImage,
   ctrl.updateProduct
 );
 

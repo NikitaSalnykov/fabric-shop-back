@@ -52,7 +52,7 @@ const addSchema = Joi.object({
 });
 
 const updateSchema = Joi.object({
-  name: Joi.string(),
+  name: Joi.string().required(),
   category: Joi.string(),
   color: Joi.string(),
   price: Joi.string(),
