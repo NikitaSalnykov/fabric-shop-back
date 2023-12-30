@@ -34,7 +34,7 @@ router.delete("/:productId", isValidId, ctrl.deleteProduct);
 router.put(
   "/:productId",
   isValidId,
-  validateBody(schemas.addSchema),
+  validateBody(schemas.updateSchema),
   ctrl.updateProduct
 );
 

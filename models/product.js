@@ -41,20 +41,30 @@ const productSchema = new Schema(
 productSchema.post("save", handleMangooseErr);
 
 const addSchema = Joi.object({
+  name: Joi.string().required(),
+  category: Joi.string().required(),
+  color: Joi.string().required(),
+  price: Joi.string().required(),
+  description: Joi.string(),
+  article: Joi.string(),
+  mainPhoto: Joi.string(),
+  extraPhotos: Joi.array().items(Joi.string()),
+});
+
+const updateSchema = Joi.object({
   name: Joi.string(),
   category: Joi.string(),
   color: Joi.string(),
   price: Joi.string(),
   description: Joi.string(),
   article: Joi.string(),
+  mainPhoto: Joi.string(),
+  extraPhotos: Joi.array().items(Joi.string()),
 });
-
-// const updateFavoriteSchema = Joi.object({
-//   favorite: Joi.boolean().required()
-// })
 
 const schemas = {
   addSchema,
+  updateSchema,
 };
 
 const Product = model("product", productSchema);
