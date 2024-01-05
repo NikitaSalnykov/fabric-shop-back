@@ -54,8 +54,11 @@ const verifyEmail = async (req, res) => {
     verify: true,
     verificationToken: "",
   });
+  const userEmail = user.email;
 
-  res.status(200).json({ message: "Verification successful" });
+  res.redirect(
+    `http://localhost:5173/react-fabric-shop/verification?fromRegistration=true&email=${userEmail}`
+  );
 };
 
 const resendVerifyEmail = async (req, res) => {
