@@ -35,15 +35,11 @@ const userSchema = new Schema(
     role: {
       type: String,
       enum: ["user", "admin", "moderator"],
-      default: "starter",
+      default: "user",
     },
     token: {
       type: String,
       default: "",
-    },
-    avatarURL: {
-      type: String,
-      required: true,
     },
     verify: {
       type: Boolean,
