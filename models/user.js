@@ -65,6 +65,9 @@ userSchema.post("save", handleMangooseErr);
 const registerSchema = Joi.object({
   email: Joi.string().pattern(emailValidation).required(),
   password: Joi.string().min(6).required(),
+  name: Joi.string().min(2).required(),
+  surname: Joi.string().min(2),
+  phone: Joi.string().min(10).required(),
 });
 
 const emailSchema = Joi.object({
