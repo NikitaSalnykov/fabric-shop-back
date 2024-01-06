@@ -57,7 +57,7 @@ const verifyEmail = async (req, res) => {
   const userEmail = user.email;
 
   res.redirect(
-    `http://localhost:5173/react-fabric-shop/verification?fromRegistration=true&email=${userEmail}`
+    `http://localhost:5173/react-fabric-shop/verification?fromEmail=true&email=${userEmail}`
   );
 };
 
