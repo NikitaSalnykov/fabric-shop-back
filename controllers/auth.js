@@ -120,11 +120,13 @@ const login = async (req, res) => {
 };
 
 const current = async (req, res) => {
-  const { email, role } = req.user;
-  const user = await User.findOne({ email });
-  res.json({
-    email,
-    role,
+  const { user } = req;
+  res.status(200).json({
+    code: 200,
+    message: "OK",
+    data: {
+      user: this.responseUserSchema(user),
+    },
   });
 };
 
