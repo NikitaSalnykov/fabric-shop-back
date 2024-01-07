@@ -123,7 +123,7 @@ const login = async (req, res) => {
   res.json({
     accessToken,
     refreshToken,
-    user: { email, password },
+    user,
   });
 };
 
