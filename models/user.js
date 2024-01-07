@@ -91,7 +91,6 @@ const updateSchema = Joi.object({
   name: Joi.string().min(2),
   surname: Joi.string().min(2),
   phone: Joi.string().min(10),
-  email: Joi.string().pattern(emailValidation).required(),
 });
 
 const schemas = {
