@@ -172,7 +172,7 @@ const current = async (req, res) => {
     code: 200,
     message: "OK",
     data: {
-      user: this.responseUserSchema(user),
+      user,
     },
   });
 };
@@ -186,7 +186,7 @@ const update = async (req, res) => {
     code: 200,
     message: "OK",
     data: {
-      user: this.responseUserSchema(updateUser),
+      user: updateUser,
     },
   });
 };
