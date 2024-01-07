@@ -21,5 +21,12 @@ router.patch(
   validateBody(schemas.updateRoleSchema),
   ctrl.updateRole
 );
+router.post("/refresh", validateBody(schemas.refreshSchema), ctrl.refresh);
+router.patch(
+  "/",
+  authenticate,
+  validateBody(schemas.updateSchema),
+  ctrl.update
+);
 
 module.exports = router;

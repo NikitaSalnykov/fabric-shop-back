@@ -37,7 +37,11 @@ const userSchema = new Schema(
       enum: ["user", "admin", "moderator"],
       default: "user",
     },
-    token: {
+    accessToken: {
+      type: String,
+      default: "",
+    },
+    refreshToken: {
       type: String,
       default: "",
     },
@@ -79,11 +83,24 @@ const updateRoleSchema = Joi.object({
   role: Joi.valid("user", "admin", "moderator").required(),
 });
 
+const refreshSchema = Joi.object({
+  refreshToken: Joi.string().required(),
+});
+
+const updateSchema = Joi.object({
+  name: Joi.string().min(2),
+  surname: Joi.string().min(2),
+  phone: Joi.string().min(10),
+  email: Joi.string().pattern(emailValidation).required(),
+});
+
 const schemas = {
   registerSchema,
   emailSchema,
   loginSchema,
   updateRoleSchema,
+  refreshSchema,
+  updateSchema,
 };
 
 const User = model("user", userSchema);

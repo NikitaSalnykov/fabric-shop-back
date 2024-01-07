@@ -6,12 +6,11 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { nanoid } = require("nanoid");
 
-const { SECRET_KEY, BASE_URL } = process.env;
+const { SECRET_KEY, BASE_URL, REFRESH_SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-
   if (user) {
     throw HttpError(409, "Email in use");
   }
@@ -111,12 +110,60 @@ const login = async (req, res) => {
     id: user._id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
-  await User.findByIdAndUpdate(user._id, { token });
+  // const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "24h" });
+  const accessToken = jwt.sign(payload, SECRET_KEY, {
+    expiresIn: "180s",
+  });
+  const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
+    expiresIn: "744h",
+  });
+
+  await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
+
   res.json({
-    token,
+    accessToken,
+    refreshToken,
     user: { email, password },
   });
+};
+
+const refresh = async (req, res) => {
+  const { refreshToken: token } = req.body;
+
+  try {
+    const { id } = jwt.verify(token, REFRESH_SECRET_KEY);
+    const isExist = await User.findOne({ refreshToken: token });
+
+    if (!isExist) {
+      throw HttpError(403, "Refresh token invalid");
+    }
+
+    const payload = {
+      id,
+    };
+
+    const newAccessToken = jwt.sign(payload, SECRET_KEY, {
+      expiresIn: "180s",
+    });
+    const newRefreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
+      expiresIn: "744h",
+    });
+
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { accessToken: newAccessToken, refreshToken: newRefreshToken },
+      { new: true }
+    );
+
+    res.status(200).json({
+      accessToken: updatedUser.accessToken,
+      refreshToken: updatedUser.refreshToken,
+    });
+  } catch (error) {
+    res.status(403).json({
+      error: error.message,
+    });
+  }
 };
 
 const current = async (req, res) => {
@@ -130,9 +177,23 @@ const current = async (req, res) => {
   });
 };
 
+const update = async (req, res) => {
+  const { user, body } = req;
+  const updateUser = await User.findByIdAndUpdate(user._id, body, {
+    new: true,
+  });
+  res.status(200).json({
+    code: 200,
+    message: "OK",
+    data: {
+      user: this.responseUserSchema(updateUser),
+    },
+  });
+};
+
 const logout = async (req, res) => {
   const { _id } = req.user;
-  await User.findByIdAndUpdate(_id, { token: "" });
+  await User.findByIdAndUpdate(_id, { accessToken: null, refreshToken: null });
   res.status(201).json({
     message: "Logout success",
   });
@@ -152,4 +213,6 @@ module.exports = {
   current: ctrlWrapper(current),
   logout: ctrlWrapper(logout),
   updateRole: ctrlWrapper(updateRole),
+  refresh: ctrlWrapper(refresh),
+  update: ctrlWrapper(update),
 };
