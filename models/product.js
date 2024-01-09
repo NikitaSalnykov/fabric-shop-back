@@ -17,6 +17,10 @@ const productSchema = new Schema(
     price: {
       type: String,
     },
+    discount: {
+      type: Number,
+      default: 0,
+    },
     description: {
       type: String,
     },
@@ -45,6 +49,7 @@ const addSchema = Joi.object({
   category: Joi.string().required(),
   color: Joi.string().required(),
   price: Joi.string().required(),
+  discount: Joi.number().min(0).max(100),
   description: Joi.string(),
   article: Joi.string(),
   // mainPhoto: Joi.string(),
@@ -56,6 +61,7 @@ const updateSchema = Joi.object({
   category: Joi.string(),
   color: Joi.string(),
   price: Joi.string(),
+  discount: Joi.number().min(0).max(100).default(0),
   description: Joi.string(),
   article: Joi.string(),
 });
