@@ -6,16 +6,25 @@ const {
 } = require("../../middlewares");
 const { schemas } = require("../../models/post");
 const isValidPostId = require("../../middlewares/isValidPostId");
+const getImage = require("../../middlewares/getImage");
 
 router.get("/", ctrl.getAll);
 router.get("/count", ctrl.getPostCount);
 router.get("/:postId", isValidPostId, ctrl.getById);
-router.post("/", validateBody(schemas.addSchema), ctrl.addPost);
+router.post("/",   upload.fields([
+  { name: "mainPhoto", maxCount: 1 },
+  { name: "extraPhotos", maxCount: 3 },
+]), validateBody(schemas.addSchema), getImage, ctrl.addPost);
 router.delete("/:postId", isValidPostId, ctrl.deletePost);
-router.put(
+router.patch(
   "/:orderId",
+  upload.fields([
+    { name: "mainPhoto", maxCount: 1 },
+    { name: "extraPhotos", maxCount: 3 },
+  ]),
   isValidPostId,
   validateBody(schemas.updateSchema),
+  getImage,
   ctrl.updatePost
 );
 
