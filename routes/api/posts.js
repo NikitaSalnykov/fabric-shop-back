@@ -18,7 +18,7 @@ router.post("/",   upload.fields([
 ]), validateBody(schemas.addSchema), getImage, ctrl.addPost);
 router.delete("/:postId", isValidPostId, ctrl.deletePost);
 router.patch(
-  "/:orderId",
+  "/:postId",
   upload.fields([
     { name: "mainPhoto", maxCount: 1 },
     { name: "extraPhotos", maxCount: 3 },
@@ -27,6 +27,12 @@ router.patch(
   validateBody(schemas.updateSchema),
   getImage,
   ctrl.updatePost
+);
+router.patch(
+  "/:postId/main",
+  isValidPostId,
+  validateBody(schemas.updateMainSchema),
+  ctrl.updateMain
 );
 
 module.exports = router;

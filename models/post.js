@@ -53,9 +53,14 @@ const updateSchema = Joi.object({
   main: Joi.boolean(),
 });
 
+const updateMainSchema = Joi.object({
+  main: Joi.boolean().required(),
+});
+
 const schemas = {
   addSchema,
-  updateSchema
+  updateSchema,
+  updateMainSchema
 };
 
 const Post = model("post", postSchema);
