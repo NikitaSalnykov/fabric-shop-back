@@ -19,6 +19,8 @@ app.use(express.static("public"));
 app.use("/api/auth", authRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
+app.use("/api/posts", postsRouter);
+
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
