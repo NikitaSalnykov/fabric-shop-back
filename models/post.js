@@ -52,7 +52,7 @@ const schemas = {
   updateSchema
 };
 
-const Post = model("post", orderSchema);
+const Post = model("post", postSchema);
 
 module.exports = {
   Post,

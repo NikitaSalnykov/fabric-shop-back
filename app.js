@@ -6,6 +6,8 @@ require("dotenv").config();
 const authRouter = require("./routes/api/auth");
 const productsRouter = require("./routes/api/products");
 const ordersRouter = require("./routes/api/orders");
+const postsRouter = require("./routes/api/posts");
+
 
 const app = express();
 
