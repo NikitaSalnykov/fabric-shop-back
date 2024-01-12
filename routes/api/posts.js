@@ -7,6 +7,7 @@ const {
 const { schemas } = require("../../models/post");
 const isValidPostId = require("../../middlewares/isValidPostId");
 const getImage = require("../../middlewares/getImage");
+const upload = require("../../middlewares/upload");
 
 router.get("/", ctrl.getAll);
 router.get("/count", ctrl.getPostCount);
