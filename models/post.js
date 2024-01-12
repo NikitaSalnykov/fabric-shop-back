@@ -25,6 +25,10 @@ const postSchema = new Schema(
       type: String,
       required: [true, "author is required"],
     },
+    main: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     versionKey: false,
@@ -39,12 +43,14 @@ const addSchema = Joi.object({
   text: Joi.string().min(40).required("add text"),
   author: Joi.string().required("add author"),
   description: Joi.string(),
+  main: Joi.boolean(),
 });
 
 const updateSchema = Joi.object({
   title: Joi.string().min(2),
   text: Joi.string().min(40),
   description: Joi.string(),
+  main: Joi.boolean(),
 });
 
 const schemas = {
