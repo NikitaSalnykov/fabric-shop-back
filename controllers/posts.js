@@ -43,17 +43,15 @@ const updatePost = async (req, res, next) => {
   res.json(result);
 };
 
-
 const updateMain = async (req, res, next) => {
   const { postId } = req.params;
+  await Post.updateMany({}, { main: false });
   const result = await Post.findByIdAndUpdate(postId, req.body, {
     new: true,
   });
-  await Post.updateMany({}, { main: false });
   if (!result) throw HttpError(404, "Not found");
   res.json(result);
 };
-
 
 module.exports = {
   getAll: ctrlWrapper(getAll),
@@ -63,5 +61,4 @@ module.exports = {
   deletePost: ctrlWrapper(deletePost),
   updatePost: ctrlWrapper(updatePost),
   updateMain: ctrlWrapper(updateMain),
-
 };
