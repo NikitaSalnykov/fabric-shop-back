@@ -29,6 +29,14 @@ const postSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    mainPhoto: {
+      type: String,
+    },
+    extraPhotos: [
+      {
+        type: String,
+      },
+    ],
   },
   {
     versionKey: false,
