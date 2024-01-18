@@ -15,12 +15,12 @@ const getById = async (req, res, next) => {
   res.json(result);
 };
 
-const addPost = async (req, res, next) => {
+const addReview = async (req, res, next) => {
   const result = await Review.create({ ...req.body });
   res.json({ message: "Add success" });
 };
 
-const deletePost = async (req, res, next) => {
+const deleteReview = async (req, res, next) => {
   const { reviewId } = req.params;
   const result = await Review.findByIdAndDelete(reviewId);
   if (!result) throw HttpError(404, "Not found");
@@ -30,6 +30,6 @@ const deletePost = async (req, res, next) => {
 module.exports = {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
-  addPost: ctrlWrapper(addPost),
-  deletePost: ctrlWrapper(deletePost),
+  addReview: ctrlWrapper(addReview),
+  deleteReview: ctrlWrapper(deleteReview),
 };
