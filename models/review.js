@@ -16,7 +16,7 @@ const reviewSchema = new Schema(
       maxlength: 450,
     },
     rating: {
-      type: number,
+      type: Number,
       required: [true, "rating is required"],
     },
     authorId: {
@@ -53,7 +53,7 @@ const schemas = {
   addSchema,
 };
 
-const Review = model("post", postSchema);
+const Review = model("review", reviewSchema);
 
 module.exports = {
   Review,
