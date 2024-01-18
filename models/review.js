@@ -41,7 +41,6 @@ const reviewSchema = new Schema(
 reviewSchema.post("save", handleMangooseErr);
 
 const addSchema = Joi.object({
-  title: Joi.string().min(2).required("add title"),
   text: Joi.string().min(40).max(450).required("add text"),
   author: Joi.string().required("add author"),
   rating: Joi.number().required("add rating"),
