@@ -7,6 +7,7 @@ const authRouter = require("./routes/api/auth");
 const productsRouter = require("./routes/api/products");
 const ordersRouter = require("./routes/api/orders");
 const postsRouter = require("./routes/api/posts");
+const reviewsRouter = require("./routes/api/reviews");
 
 
 const app = express();
@@ -22,7 +23,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/posts", postsRouter);
-app.use("/api/reviews", postsRouter);
+app.use("/api/reviews", reviewsRouter);
 
 
 app.use((req, res) => {
