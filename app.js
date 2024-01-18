@@ -22,6 +22,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/orders", ordersRouter);
 app.use("/api/posts", postsRouter);
+app.use("/api/reviews", postsRouter);
 
 
 app.use((req, res) => {
