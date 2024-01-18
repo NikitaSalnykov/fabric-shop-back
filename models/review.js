@@ -6,7 +6,7 @@ const reviewSchema = new Schema(
   {
     author: {
       type: String,
-      required: [true, "title is required"],
+      required: [true, "author is required"],
       minlength: 2,
     },
     text: {
