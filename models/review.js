@@ -2,6 +2,21 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { handleMangooseErr } = require("../helpers");
 
+
+const commentSchema = new Schema({
+  author: {
+    type: String,
+    required: [true, "author is required"],
+    minlength: 2,
+  },
+  comment: {
+    type: String,
+    required: [true, "comment is required"],
+    minlength: 5,
+    maxlength: 450,
+  },
+});
+
 const reviewSchema = new Schema(
   {
     author: {
@@ -26,6 +41,7 @@ const reviewSchema = new Schema(
       type: String,
       required: [true, "productId is required"],
     },
+    comments: [commentSchema],
     extraPhotos: [
       {
         type: String,
@@ -46,11 +62,16 @@ const addSchema = Joi.object({
   rating: Joi.number().required("add rating"),
   authorId: Joi.string(),
   productId: Joi.string().required("add productId"),
+});
 
+const addSchemaComment = Joi.object({
+  author: Joi.string().min(2).required(),
+  comment: Joi.string().min(5).max(450).required(),
 });
 
 const schemas = {
   addSchema,
+  addSchemaComment
 };
 
 const Review = model("review", reviewSchema);
