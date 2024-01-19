@@ -22,9 +22,9 @@ const reviewSchema = new Schema(
     authorId: {
       type: String,
     },
-    postId: {
+    productId: {
       type: String,
-      required: [true, "postId is required"],
+      required: [true, "productId is required"],
     },
     extraPhotos: [
       {
@@ -45,7 +45,7 @@ const addSchema = Joi.object({
   author: Joi.string().required("add author"),
   rating: Joi.number().required("add rating"),
   authorId: Joi.string(),
-  postId: Joi.string().required("add postId"),
+  productId: Joi.string().required("add productId"),
 
 });
 
