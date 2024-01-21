@@ -17,6 +17,9 @@ const productSchema = new Schema(
     price: {
       type: String,
     },
+    pricePerMeter: {
+      type: String,
+    },
     discount: {
       type: Number,
       default: 0,
