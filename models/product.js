@@ -65,7 +65,7 @@ const updateSchema = Joi.object({
   category: Joi.string(),
   color: Joi.string(),
   price: Joi.string(),
-  pricePerMeter: Joi.string(),
+  pricePerMeter: Joi.string().allow(null),
   discount: Joi.number().min(0).max(100).default(0),
   description: Joi.string(),
   article: Joi.string(),
