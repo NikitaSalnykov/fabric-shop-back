@@ -52,6 +52,7 @@ const addSchema = Joi.object({
   category: Joi.string().required(),
   color: Joi.string().required(),
   price: Joi.string().required(),
+  pricePerMeter: Joi.string(),
   discount: Joi.number().min(0).max(100),
   description: Joi.string(),
   article: Joi.string(),
