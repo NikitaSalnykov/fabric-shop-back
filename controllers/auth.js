@@ -214,10 +214,6 @@ const passwordForgot = async (req, res) => {
     throw HttpError(400, "Missing required field email");
   }
 
-  if (user.verify) {
-    throw HttpError(400, "Verification has already been passed");
-  }
-
   const hash = await bcrypt.hash(`${email}${Date.now()}${SECRET_KEY}`, 10);
   const link = `${FRONT_URL}/reset-password/${hash}`
   cacheManager.addToCache('reset-password', hash)
