@@ -218,7 +218,7 @@ const passwordForgot = async (req, res) => {
   const link = `${FRONT_URL}/reset-password/${hash}`
   cacheManager.addToCache('reset-password', hash)
 
-  const verifyEmail = {
+  const resetEmail = {
     to: email,
     html: `<div>
     <h2>Здравствуйте, ${email}</h2>
@@ -228,7 +228,7 @@ const passwordForgot = async (req, res) => {
     </div>`,
   };
 
-  await sendEmail(verifyEmail);
+  await sendEmail(resetEmail);
 
   res.status(200).json({ message: "Reset password email sent" });
 };
