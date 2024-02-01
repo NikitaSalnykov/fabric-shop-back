@@ -93,6 +93,10 @@ const updateSchema = Joi.object({
   phone: Joi.string().min(10),
 });
 
+const passwordResetSchema  = Joi.object({
+  newPassword: Joi.string().min(6).required(),
+});
+
 const schemas = {
   registerSchema,
   emailSchema,
@@ -100,6 +104,7 @@ const schemas = {
   updateRoleSchema,
   refreshSchema,
   updateSchema,
+  passwordResetSchema ,
 };
 
 const User = model("user", userSchema);

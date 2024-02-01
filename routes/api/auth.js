@@ -29,4 +29,9 @@ router.patch(
   ctrl.update
 );
 
+router.post("/password/forgot", validateBody(schemas.emailSchema), ctrl.passwordForgot);
+
+router.post("/password/reset", validateBody(schemas.passwordResetSchema), ctrl.passwordReset);
+
+
 module.exports = router;

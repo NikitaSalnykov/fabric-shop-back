@@ -1,12 +1,13 @@
 const { User } = require("../models/user");
 const { HttpError, sendEmail } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
+const cacheManager = require("../helpers/сacheManager");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const { nanoid } = require("nanoid");
 
-const { SECRET_KEY, BASE_URL, REFRESH_SECRET_KEY } = process.env;
+const { SECRET_KEY, BASE_URL, FRONT_URL, REFRESH_SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -56,7 +57,7 @@ const verifyEmail = async (req, res) => {
   const userEmail = user.email;
 
   res.redirect(
-    `http://localhost:5173/react-fabric-shop/verification?fromEmail=true&email=${userEmail}`
+    `${FRONT_URL}/react-fabric-shop/verification?fromEmail=true&email=${userEmail}`
   );
 };
 
@@ -205,6 +206,57 @@ const updateRole = async (req, res) => {
   res.json(result);
 };
 
+const passwordForgot = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw HttpError(400, "Missing required field email");
+  }
+
+  if (user.verify) {
+    throw HttpError(400, "Verification has already been passed");
+  }
+
+  const hash = await bcrypt.hash(`${email}${Date.now()}${SECRET_KEY}`, 10);
+  const link = `${FRONT_URL}/reset-password/${hash}`
+  cacheManager.addToCache('reset-password', hash)
+
+  const verifyEmail = {
+    to: email,
+    html: `<div>
+    <h2>Здравствуйте, ${email}</h2>
+    <p>Ваша ссылка для изменения пароля успешно создана, для перехода нажмите кнопку:<p>
+    <p><a target="_blank" href="${link}">Изменить пароль</a></p>
+    <p>Спасибо!</p>
+    </div>`,
+  };
+
+  await sendEmail(verifyEmail);
+
+  res.status(200).json({ message: "Reset password email sent" });
+};
+
+const passwordReset = async (req, res) => {
+  try {
+    const { _id } = req.user;
+    const { newPassword } = req.body;
+
+    if (!newPassword) {
+      throw HttpError(400, "New password is required");
+    }
+
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+    const updatedUser = await User.findByIdAndUpdate(_id, { password: hashPassword }, { new: true });
+
+    res.status(200).json({ message: "Password reset successful", user: updatedUser });
+  } catch (error) {
+    console.error(error);
+    res.status(error.status || 500).json({ error: error.message });
+  }
+};
+
+
 module.exports = {
   register: ctrlWrapper(register),
   verifyEmail: ctrlWrapper(verifyEmail),
@@ -215,4 +267,6 @@ module.exports = {
   updateRole: ctrlWrapper(updateRole),
   refresh: ctrlWrapper(refresh),
   update: ctrlWrapper(update),
+  passwordForgot: ctrlWrapper(passwordForgot),
+  passwordReset: ctrlWrapper(passwordReset),
 };
