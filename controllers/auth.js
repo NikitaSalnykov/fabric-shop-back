@@ -212,13 +212,7 @@ const passwordForgot = async (req, res) => {
     throw HttpError(400, "Missing required field email");
   }
 
-  const payload = {
-    id: user._id,
-  };
-
-  const resetToken  = jwt.sign(payload, SECRET_KEY, {
-    expiresIn: "300s",
-  });
+  const resetToken  = nanoid();
 
   await User.findByIdAndUpdate(user._id, { resetToken });
 
@@ -227,7 +221,7 @@ const passwordForgot = async (req, res) => {
     html: `<div>
     <h2>Изменение пароля на вашем аккаунте ${email}</h2>
     <p>Это автоматическое уведомление для подтверждения изменения пароля на вашем аккаунте на сайте Dream Fatin. Если вы не выполняли данное действие, пожалуйста, проигнорируйте это уведомление и немедленно свяжитесь с нашей службой поддержки.<p>
-    <p><a target="_blank" href="${FRONT_URL}/reset-password/${resetToken}?${email}">Изменить пароль</a></p>
+    <p><a target="_blank" href="${FRONT_URL}/reset-password/${resetToken}">Изменить пароль</a></p>
     <p>Спасибо!</p>
     </div>`,
   };
