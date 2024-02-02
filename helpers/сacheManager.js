@@ -7,10 +7,19 @@ client.on('error', (err) => {
 
 
 const addToCache = (key, value) => {
-  client.set(`${key}`, value, 'EX', 3600); // Устанавливаем время жизни кеша в секундах (в данном случае 1 час)
+  if (client.connected) {
+    client.set(`${key}`, value, 'EX', 3600);
+  } else {
+    // Обработка случая, когда клиент закрыт
+    console.error('Redis client is closed. Unable to add to cache.');
+  }
 };
 
 const getFromCache = async (key) => {
+  if (!client.connected) {
+    throw new Error('Redis client is not connected');
+  }
+
   return new Promise((resolve, reject) => {
     client.get(`${key}`, (err, value) => {
       if (err) {

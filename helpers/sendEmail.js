@@ -19,7 +19,6 @@ const sendEmail = async (data) => {
   await transport.sendMail(email);
 };
 
-console.log();
 
 const transport = nodemailer.createTransport(nodemailerConfig);
 

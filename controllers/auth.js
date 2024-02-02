@@ -1,7 +1,6 @@
 const { User } = require("../models/user");
 const { HttpError, sendEmail } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
-const cacheManager = require("../helpers/сacheManager");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -209,41 +208,54 @@ const updateRole = async (req, res) => {
 const passwordForgot = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
-
   if (!user) {
     throw HttpError(400, "Missing required field email");
   }
 
-  const hash = await bcrypt.hash(`${email}${Date.now()}${SECRET_KEY}`, 10);
-  const link = `${FRONT_URL}/reset-password/${hash}`
-  cacheManager.addToCache('reset-password', hash)
+  const payload = {
+    id: user._id,
+  };
+
+  const resetToken  = jwt.sign(payload, SECRET_KEY, {
+    expiresIn: "300s",
+  });
+
+  await User.findByIdAndUpdate(user._id, { resetToken });
 
   const resetEmail = {
     to: email,
     html: `<div>
-    <h2>Здравствуйте, ${email}</h2>
-    <p>Ваша ссылка для изменения пароля успешно создана, для перехода нажмите кнопку:<p>
-    <p><a target="_blank" href="${link}">Изменить пароль</a></p>
+    <h2>Изменение пароля на вашем аккаунте ${email}</h2>
+    <p>Это автоматическое уведомление для подтверждения изменения пароля на вашем аккаунте на сайте Dream Fatin. Если вы не выполняли данное действие, пожалуйста, проигнорируйте это уведомление и немедленно свяжитесь с нашей службой поддержки.<p>
+    <p><a target="_blank" href="${FRONT_URL}/reset-password/${resetToken}?${email}">Изменить пароль</a></p>
     <p>Спасибо!</p>
     </div>`,
   };
 
   await sendEmail(resetEmail);
 
-  res.status(200).json({ message: "Reset password email sent" });
+  res.status(200).json({ message: "Reset password email sent",
+  user });
 };
 
 const passwordReset = async (req, res) => {
   try {
-    const { _id } = req.user;
-    const { newPassword } = req.body;
+    const { resetToken, newPassword } = req.body;
 
-    if (!newPassword) {
-      throw HttpError(400, "New password is required");
+    const user = await User.findOne({ resetToken });
+
+    if (!user) {
+      throw HttpError(400, "Invalid reset token");
     }
-
+    
+    
     const hashPassword = await bcrypt.hash(newPassword, 10);
-    const updatedUser = await User.findByIdAndUpdate(_id, { password: hashPassword }, { new: true });
+
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { password: hashPassword, resetToken: null },
+      { new: true }
+    );
 
     res.status(200).json({ message: "Password reset successful", user: updatedUser });
   } catch (error) {

@@ -45,6 +45,10 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
+    resetToken: {
+      type: String,
+      default: "",
+    },
     verify: {
       type: Boolean,
       default: false,
@@ -95,6 +99,7 @@ const updateSchema = Joi.object({
 
 const passwordResetSchema  = Joi.object({
   newPassword: Joi.string().min(6).required(),
+  resetToken: Joi.string().required()
 });
 
 const schemas = {
