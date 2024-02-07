@@ -258,6 +258,13 @@ const passwordReset = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  let result;
+  result = await User.find({}, 'email name surname phone');
+  res.json(result);
+};
+
+
 
 module.exports = {
   register: ctrlWrapper(register),
@@ -271,4 +278,5 @@ module.exports = {
   update: ctrlWrapper(update),
   passwordForgot: ctrlWrapper(passwordForgot),
   passwordReset: ctrlWrapper(passwordReset),
+  getAll: ctrlWrapper(getAll)
 };

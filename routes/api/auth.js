@@ -33,5 +33,7 @@ router.post("/password/forgot", validateBody(schemas.emailSchema), ctrl.password
 
 router.post("/password/reset", validateBody(schemas.passwordResetSchema), ctrl.passwordReset);
 
+router.get("/users", ctrl.getAll);
+
 
 module.exports = router;
