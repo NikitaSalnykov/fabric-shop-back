@@ -260,7 +260,7 @@ const passwordReset = async (req, res) => {
 
 const getAll = async (req, res) => {
   let result;
-  result = await User.find({}, 'email name surname phone');
+  result = await User.find({}, 'email name surname phone timestamps');
   res.json(result);
 };
 
