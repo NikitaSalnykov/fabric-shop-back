@@ -1,6 +1,8 @@
 const { Order } = require("../models/order");
 const { HttpError, sendEmail } = require("../helpers");
 const ctrlWrapper = require("../helpers/ctrlWrapper");
+const sendNotification = require("../helpers/telegramBot");
+
 
 const getAll = async (req, res) => {
   let result;
@@ -57,6 +59,7 @@ const addOrder = async (req, res, next) => {
     </div>`,
   };
 
+  await sendNotification(order)
   await sendEmail(orderEmail);
 
   res.json({ message: "Add success" });
