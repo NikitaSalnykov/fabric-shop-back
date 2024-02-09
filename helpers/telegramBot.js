@@ -3,8 +3,9 @@ const { TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID } = process.env;
 
 // Trigger the telegram bot to send a message
 async function sendNotification(order) {
+  
   if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
-    throw new Error('Bot token or chat id missing');
+    return
   }
 
   const message = buildMessage(order);
@@ -48,7 +49,6 @@ function buildMessage(order) {
 <b>Номер заказа: ${order.orderNumber}</b>
 
 1. Имя заказчика: ${order.name} ${order.surname}
-2. Номер заказа: ${order.orderNumber}
 3. Имя заказчика: ${order.name} ${order.surname}
 4. Телефон: ${order.tel}
 5. Способ доставки: ${
